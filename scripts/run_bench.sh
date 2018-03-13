@@ -12,6 +12,7 @@ data_dir=/scratch/lc37/NodeBenchData/fascia
 ## default log dir
 log_dir=${work_dir}/../Bench-Test
 mkdir -p ${log_dir}
+rm -rf ${log_dir}/*
 
 ## ------ run fascia-bench ----------------
 ## name of benchmark program
@@ -19,9 +20,10 @@ mkdir -p ${log_dir}
 executor=fascia
 
 ## paras of benchmark program
-graph_file=gnp.1.20.graph
-# template_file=u12-2.fascia
-template_file=u5-1.fascia
+# graph_file=gnp.1.20.graph
+graph_file=miami.graph
+template_file=u12-2.fascia
+# template_file=u5-1.fascia
 ## omp thread affinity
 affinity_typ=scatter
 ## num of omp threads
@@ -83,6 +85,7 @@ cd ${log_dir}
 extension=round3
 exp_id=${executor}-${extension}
 bench_res=bench-res-${exp_id}.txt
+# rm -rf ${bench_res}
 
 echo "Results from hosts" > ${bench_res} 
 
@@ -104,6 +107,9 @@ do # Whitespace-safe and recursive
 done
 
 ## archive the results file
+if [ -d ${exp_id} ];then
+	rm -rf ${exp_id}
+fi
 mkdir -p ${exp_id} 
 mv *.log ${exp_id}
 mv ${bench_res} ${exp_id}
